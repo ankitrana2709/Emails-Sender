@@ -1,2 +1,3 @@
-PASSWORD="Tr@ffic123"
-EMAIL="rana1997ankit23@gmail.com"
+# You need to generate password from gmail< settings< security< pass for app< mail.
+PASSWORD=""
+EMAIL="yourmail@gmail.com"
