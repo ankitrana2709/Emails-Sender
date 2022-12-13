@@ -10,49 +10,56 @@ email_id=config.EMAIL
 email_passwd=config.PASSWORD
 #email_id = os.environ.get("EMAIL_USER")
 #email_passwd = os.environ.get("EMAIL_PASS")
-body = """ Dear Ma'am, <br> <br> Hope you are having a very good day!
-   <br> Please find below attachment. <br><br> Ankit Rana <br>This mail is sent by a script created by a <br>
-   <a href="swamizone.vercel.app">Mathematician</a>.
+body = """ Dear Sir, <br> <br> Hope you are having a very good day!
+   <br><br> This is Ankit Rana <br>Hello sir, 
+I am a fellow data scientist looking for an opportunity to learn and grow. If there is an opportunity in your firm pls let me know.<br>
+Kindly reach out for your valuable feedbacks.<br><br>
+Thankyou.<br><a href="https://swamizone.vercel.app/"> Ankit Rana</a><br> https://swamizone.vercel.app/
+ 
   """
-#contacts = ["ankitranastun@gmail.com","ankit@scatterpie.io"]
+contacts = ["ankitranastun@gmail.com","ankit@scatterpie.io"]
 counter = 0
-cont = pd.read_csv("contacts.csv", header=0)
-contacts = cont["recievers"].tolist()
-for contact in contacts:
-    message = MIMEMultipart()
-    message['From'] = email_id
-    message['To'] = contact
-    message['Subject'] = "Please find my looped attachment below"
+contacts= ['contacts.csv', 'indiands.csv']
+for cont in contacts:
 
-    message.attach(MIMEText(body, 'html'))
+    conts = pd.read_csv(cont, header=0)
+    contacts = conts["recievers"].tolist()
+    for contact in contacts:
+        message = MIMEMultipart()
+        message['From'] = email_id
+        message['To'] = contact
+        message['Subject'] = "Seeking to learn"
 
-    #attach pdf here
-    pdfname = 'lvu.pdf'
-    binary_pdf = open(pdfname, 'rb')
+        message.attach(MIMEText(body, 'html'))
 
-    payload = MIMEBase('application', 'octate-stream', Name=pdfname)
-    payload.set_payload((binary_pdf).read())
-    
-    # enconding the binary into base64
-    encoders.encode_base64(payload)
-    
-    # add header with pdf name
-    payload.add_header('Content-Decomposition', 'attachment', filename=pdfname)
-    message.attach(payload)
+        #attach pdf here
+        pdfs = ['AnkitRana.pdf', 'CoverLetter.pdf', 'thanks.pdf']
+        for pdf in pdfs:
+            binary_pdf = open(pdf, 'rb')
 
-    session = smtplib.SMTP('smtp.gmail.com', 587)
-    
-    #enable security
-    session.starttls()
-    
-    #login with mail_id and password
-    session.login(email_id, email_passwd)
-    
-    text = message.as_string()
-    session.sendmail(email_id, contact, text)
-    session.quit()
-    print(f'Mail Sent to {contact}')
-    counter +=1
+            payload = MIMEBase('application', 'octate-stream', Name=pdf)
+            payload.set_payload((binary_pdf).read())
+            
+            # enconding the binary into base64
+            encoders.encode_base64(payload)
+            
+            # add header with pdf name
+            payload.add_header('Content-Decomposition', 'attachment', filename=pdf)
+            message.attach(payload)
+
+        session = smtplib.SMTP('smtp.gmail.com', 587)
+        
+        #enable security
+        session.starttls()
+        
+        #login with mail_id and password
+        session.login(email_id, email_passwd)
+        
+        text = message.as_string()
+        session.sendmail(email_id, contact, text)
+        session.quit()
+        print(f'Mail Sent to {contact}')
+        counter +=1
 if counter == 1:
     print("One mail sent")
 else:

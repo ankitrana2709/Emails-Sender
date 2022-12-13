@@ -1,5 +1,7 @@
 import pandas as pd
-cont = pd.read_csv("contacts.csv", header=0)
-contacts = cont["recievers"].tolist()
+contacts = ['indiands.csv', 'contacts.csv']
 for contact in contacts:
-    print(contact)
+    cont = pd.read_csv(contact, header=0)
+    con = cont["recievers"].tolist()
+print(con)
+    
